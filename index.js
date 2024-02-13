@@ -1,11 +1,26 @@
 // Create the playable character
-const pc = newPlayableCharacter(100, 110)
+const player = newPlayableCharacter(100, 110)
 
 // Create a non-playable character
 const npc = newNonPlayableCharacter(50, 300)
 
+setInterval(() => {
+    handleCollision(player, npc);
+}, 100);
+
 // have the NPC start walking east immediately
-npc.walkEast()
+function loopTrack() {
+    npc.walkNorth(1400)
+        .then(() => npc.walkEast(1200))
+        .then(() => npc.walkSouth(300))
+        .then(() => npc.walkEast(1500))
+        .then(() => npc.walkSouth(1500))
+        .then(() => npc.walkWest(2700))
+        .then(() => npc.walkNorth(400))
+        .then(loopTrack); 
+}
+
+loopTrack();
 
 // Create the inventory
 const inventory = newInventory()

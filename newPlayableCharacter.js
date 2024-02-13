@@ -20,9 +20,36 @@ function newPlayableCharacter(x, y) {
         }
     }
 
-    move(element).withArrowKeys(x, y, handleDirectionChange)
+    const player = {
+        element: element,
+        x: x,
+        y: y
+    };
 
-    return {
-        element: element
+    move(element).withArrowKeys(x, y, handleDirectionChange);
+
+    return player;    
+}
+
+function checkCollision(player, npc) {
+    const playerRect = player.element.getBoundingClientRect();
+    const npcRect = npc.element.getBoundingClientRect();
+
+    return !(
+        playerRect.right < npcRect.left ||
+        playerRect.left > npcRect.right ||
+        playerRect.bottom < npcRect.top ||
+        playerRect.top > npcRect.bottom
+    );
+}
+
+function handleCollision(player, npc) {
+    if (checkCollision(player, npc)) {
+        const playAgain = confirm("You collided with the non-player character. Do you want to play again?");
+        if (playAgain) {
+            alert("Refresh to restart the game...");
+        } else {
+            alert("Game over!");
+        }
     }
 }
